@@ -12,8 +12,21 @@ block content
       h3.my-3 予定を検索する
       form(action="/search", method="post")
         div.form-group.row
-          input(type="text" name="query" placeholder="Query").form-control.col-sm-10
+          input(type="text" name="scheduleQuery" placeholder="予定名").form-control.col-sm-5
+          input(type="text" name="candidateQuery" placeholder="候補日").form-control.col-sm-5
           button(type="submit").col-sm-2 検索する
+      - var hasSearchResults = searchResults.length > 0
+      if hasSearchResults
+        h3.my-3 検索結果
+        table.table
+          tr
+            th 予定名
+            th 候補日
+          each searchResult in searchResults
+            tr
+              td
+                a(href=`/schedules/${searchResult.scheduleId}`) #{searchResult.scheduleName}
+              td #{searchResult.candidateNames}
 
       h3.my-3 あなたの作った予定一覧
       table.table
