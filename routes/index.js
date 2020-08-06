@@ -9,38 +9,6 @@ const Op = Sequelize.Op;
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  // const title = '予定調整くん';
-  // let searchResult;
-  // if (req.user) {
-  //   Schedule.findAll({
-  //     where: {
-  //       createdBy: req.user.id
-  //     },
-  //     include:[{  // 内部結合
-  //       model: Candidate,
-  //       attributes: ['candidateName']
-  //     }],
-  //     order: [['updatedAt', 'DESC']]
-  //   }).then((schedules) => {
-  //     schedules.forEach((schedule) => {
-  //       // 候補日時作成
-  //       let candidateNames = "";
-  //       schedule.candidates.forEach((c) => {
-  //         candidateNames = candidateNames + c.candidateName + ', '  
-  //       });
-  //       schedule.candidateNames = candidateNames;
-  //       // schedule.formattedUpdatedAt = moment(schedule.updatedAt).tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm');
-  //     });
-  //     res.render('index', {
-  //       title: title,
-  //       user: req.user,
-  //       schedules: schedules,
-  //       searchResult: searchResult
-  //     });
-  //   });
-  // } else {
-  //   res.render('index', { title: title, user: req.user });
-  // }
   createIndexPage(req, res, []);
 });
 
@@ -51,12 +19,12 @@ router.post('/search', (req, res, next) => {
   Schedule.findAll({
     include:[{  // 内部結合
       model: Candidate,
-      // attributes: ['candidateName'],
       where: {
         candidateName: {
           [Op.like]: candidateQuery
         },
-      }
+      },
+      required: true
     }],
     where: {
       scheduleName: {
@@ -79,13 +47,13 @@ router.post('/search', (req, res, next) => {
       },
       include:[{  // 内部結合
         model: Candidate,
-        attributes: ['candidateName']
+        attributes: ['candidateName'],
+        required: true
       }],
       attributes: ['scheduleId', 'scheduleName'],
       order: [['updatedAt', 'DESC']]
     }).then((schedules) => {
       schedules.forEach((schedule) => {
-        // 候補日時作成
         let candidateNames = "";
         schedule.candidates.forEach((c) => {
           candidateNames = candidateNames + c.candidateName + ', '  
@@ -108,9 +76,11 @@ function createIndexPage(req, res, searchResult) {
       },
       include:[{  // 内部結合
         model: Candidate,
-        attributes: ['candidateName']
+        attributes: ['candidateName'],
+        required: true
       }],
-      order: [['updatedAt', 'DESC']]
+      order: [['updatedAt', 'DESC']],
+      attributes: ['scheduleId', 'scheduleName']
     }).then((schedules) => {
       schedules.forEach((schedule) => {
         // 候補日時作成
@@ -119,7 +89,6 @@ function createIndexPage(req, res, searchResult) {
           candidateNames = candidateNames + c.candidateName + ', '  
         });
         schedule.candidateNames = candidateNames;
-        // schedule.formattedUpdatedAt = moment(schedule.updatedAt).tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm');
       });
       res.render('index', {
         title: title,
