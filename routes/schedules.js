@@ -10,8 +10,9 @@ const Availability = require('../models/availability');
 const Comment = require('../models/comment');
 
 router.get('/new', authenticationEnsurer, (req, res, next) => {
-  res.render('new', { user: req.user });
+  res.render('new', { user: req.user, candidates: ['1', '2', '3'] });
 });
+
 
 router.post('/', authenticationEnsurer, (req, res, next) => {
   const scheduleId = uuid.v4();

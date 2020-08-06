@@ -39,3 +39,11 @@ buttonSelfComment.click(() => {
       });
   }
 });
+
+const buttonNewCandidate = $('#add-candidate-button');
+const newCandidate = $('#new-candidate');
+buttonNewCandidate.click(() => {
+  var $newCandidate = $('<li />', {class: 'list-group-item'}).append(newCandidate.val().toString());
+  $('#candidate-input-area').before($newCandidate);
+  newCandidate.val("");
+});

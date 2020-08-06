@@ -9,6 +9,12 @@ block content
       label(for="memo") メモ
       textarea(name="memo")#memo.form-control
     div.form-group
-      label(for="candidates") 候補日程 (改行して複数入力してください)
-      textarea(name="candidates" rows="4")#candidates.form-control
+      label(for="candidates") 候補日程
+      ul#candidatelist.list-group
+        li#candidate-input-area.list-group-item
+          div.row
+            input(type="text" name="candidates" placeholder="新規日程")#new-candidate.form-control.col-sm-6
+            //- button(class='btn btn-success col-sm-2 offset-1' date-candidates=candidates)#add-candidate-button 追加
+            //- button()#add-candidate-button.btn-xs.btn-info 編集
+            button(type="button" class='btn btn-success col-sm-2 offset-1' date-candidates=candidates)#add-candidate-button.btn-xs.btn-info 追加
     button(type="submit").btn.btn-info 予定をつくる

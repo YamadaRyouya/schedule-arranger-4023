@@ -65,7 +65,6 @@ var logoutRouter = require('./routes/logout');
 var schedulesRouter = require('./routes/schedules');
 var availabilitiesRouter = require('./routes/availabilities');
 var commentsRouter = require('./routes/comments');
-// var searchRouter = require('./routes/search');
 
 var app = express();
 app.use(helmet());
@@ -90,7 +89,6 @@ app.use('/logout', logoutRouter);
 app.use('/schedules', schedulesRouter);
 app.use('/schedules', availabilitiesRouter);
 app.use('/schedules', commentsRouter);
-// app.use('/search', searchRouter);
 
 app.get('/auth/github',
   passport.authenticate('github', { scope: ['user:email'] }),
