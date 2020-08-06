@@ -9,13 +9,19 @@ block content
       a(href="/schedules/new").btn.btn-info 予定を作る
     - var hasSchedule = schedules.length > 0
     if hasSchedule
+      h3.my-3 予定を検索する
+      form(action="/search", method="post")
+        div.form-group.row
+          input(type="text" name="query" placeholder="Query").form-control.col-sm-10
+          button(type="submit").col-sm-2 検索する
+
       h3.my-3 あなたの作った予定一覧
       table.table
         tr
           th 予定名
-          th 更新日時
+          th 候補日
         each schedule in schedules
           tr
             td
               a(href=`/schedules/${schedule.scheduleId}`) #{schedule.scheduleName}
-            td #{schedule.formattedUpdatedAt}
+            td #{schedule.candidateNames}

@@ -14,14 +14,18 @@ var Candidate = require('./models/candidate');
 var Comment = require('./models/comment');
 User.sync().then(() => {
   Schedule.belongsTo(User, { foreignKey: 'createdBy' });
-  Schedule.sync();
-  Comment.belongsTo(User, { foreignKey: 'userId' });
-  Comment.sync();
-  Availability.belongsTo(User, { foreignKey: 'userId' });
-  Candidate.sync().then(() => {
-    Availability.belongsTo(Candidate, { foreignKey: 'candidateId' });
-    Availability.sync();
+  Schedule.hasMany(Candidate, { foreignKey: 'scheduleId' });
+  Schedule.sync().then(() => {
+    Candidate.belongsTo(Schedule, { foreignKey: 'scheduleId' })
+    Comment.belongsTo(User, { foreignKey: 'userId' });
+    Comment.sync();
+    Availability.belongsTo(User, { foreignKey: 'userId' });
+    Candidate.sync().then(() => {
+      Availability.belongsTo(Candidate, { foreignKey: 'candidateId' });
+      Availability.sync();
+    });
   });
+  
 });
 
 
@@ -61,6 +65,7 @@ var logoutRouter = require('./routes/logout');
 var schedulesRouter = require('./routes/schedules');
 var availabilitiesRouter = require('./routes/availabilities');
 var commentsRouter = require('./routes/comments');
+var searchRouter = require('./routes/search');
 
 var app = express();
 app.use(helmet());
@@ -85,6 +90,7 @@ app.use('/logout', logoutRouter);
 app.use('/schedules', schedulesRouter);
 app.use('/schedules', availabilitiesRouter);
 app.use('/schedules', commentsRouter);
+app.use('/search', searchRouter);
 
 app.get('/auth/github',
   passport.authenticate('github', { scope: ['user:email'] }),
